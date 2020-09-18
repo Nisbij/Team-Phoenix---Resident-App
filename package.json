@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
+    "server": "node index"
    },
   "author": "Team Pheonix (Shubham)",
   "license": "ISC",
