@@ -46,6 +46,28 @@ router.get('/allposts', async (req, res) => {
   }
 });
 
+router.get('/allposts/:lng/:lat', (req, res, next) => {
+  
+  Posts.aggregate().near({
+    near: [parseFloat(req.params.lng), parseFloat(req.params.lat)],
+    maxDistance: 3/6371,
+    spherical: true,
+    distanceField: "dis"
+   })
+   .then(posts => {
+    console.log(posts);
+    if (posts) {
+      if (posts.length === 0)
+        return res.send({
+          message:
+            "maxDistance is too small, or your query params {lng, lat} are incorrect (too big or too small)."
+        });
+      return res.send(posts);
+    }
+  })
+  .catch(next);
+  });
+
 //delete my post
 router.delete('/deletepost/:id', auth, async (req, res) => {
   try {
